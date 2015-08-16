@@ -1,0 +1,73 @@
+def VersionMajor = 0
+def VersionMinor = 1
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+    }
+}
+
+apply plugin: 'forge'
+
+def VersionBuild = 0
+if (System.getenv("BUILD_NUMBER") != null)
+    VersionBuild = System.getenv("BUILD_NUMBER")
+
+version = "1.7.10-${VersionMajor}.${VersionMinor}-build${VersionBuild}"
+group= "mod.timersofdeath"
+archivesBaseName = "TimersOfDeath"
+
+minecraft {
+    version = "1.7.10-10.13.4.1492-1.7.10"
+    runDir = "run"
+}
+
+dependencies {
+}
+
+processResources
+        {
+            inputs.property "version", project.version
+            inputs.property "mcversion", project.minecraft.version
+
+            from(sourceSets.main.resources.srcDirs) {
+                include 'mcmod.info'
+
+                expand 'version': project.version, 'mcversion': project.minecraft.version
+            }
+            from(sourceSets.main.resources.srcDirs) {
+                exclude 'mcmod.info'
+            }
+        }
+jar {
+}
+
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'deobf'
+}
+
+task apiJar(type: Jar) {
+    from(sourceSets.main.java) {
+        include "src/main/java/mod/timersofdeath/api"
+    }
+    classifier = 'api'
+}
+
+artifacts {
+    archives deobfJar
+    archives apiJar
+}
+
+build.dependsOn deobfJar, apiJar

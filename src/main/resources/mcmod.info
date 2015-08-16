@@ -1,0 +1,16 @@
+[
+{
+  "modid": "timersofdeath",
+  "name": "Timers of Death",
+  "description": "Do not die too often, you silly fox!",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Ashleee"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
