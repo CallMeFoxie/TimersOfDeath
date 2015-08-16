@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Events {
 
-    public static final int POTION_DURATION  = 45;
+    public static final int POTION_DURATION  = 40;
     // TODO configure this
     public static       int SEVERITY_DEFAULT = 1;
     // TODO configure this
@@ -37,7 +37,7 @@ public class Events {
 
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.player.worldObj.getTotalWorldTime() % 40 != 0) // once every 2 seconds
+        if (event.player.worldObj.getTotalWorldTime() % POTION_DURATION != 0) // once every 2 seconds
             return;
 
         if (event.phase != TickEvent.Phase.START || event.player.worldObj.isRemote)
@@ -55,7 +55,7 @@ public class Events {
                 double amountTired = weightedDeaths / debuff.minimumSeverity;
                 int scale = (int) Math.max(amountTired, debuff.maxScale);
                 event.player.addPotionEffect(
-                        new PotionEffect(debuff.potion.getId(), POTION_DURATION, scale));
+                        new PotionEffect(debuff.potion.getId(), POTION_DURATION * 2, scale));
             }
         }
 

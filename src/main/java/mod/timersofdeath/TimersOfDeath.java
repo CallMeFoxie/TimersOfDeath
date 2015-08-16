@@ -10,6 +10,7 @@ import cpw.mods.fml.relauncher.Side;
 import darklib.SavedData;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 
 @Mod(modid = TimersOfDeath.MODID, name = TimersOfDeath.MODNAME, acceptableRemoteVersions = "*", version = TimersOfDeath.VERSION)
 public class TimersOfDeath {
@@ -24,7 +25,7 @@ public class TimersOfDeath {
 
     @Mod.EventHandler
     public void preinit(FMLPreInitializationEvent event) {
-
+        new Config(event.getSuggestedConfigurationFile().getAbsolutePath());
     }
 
     @Mod.EventHandler
@@ -34,6 +35,9 @@ public class TimersOfDeath {
 
     @Mod.EventHandler
     public void postinit(FMLPostInitializationEvent event) {
+        new Events();
+        MinecraftForge.EVENT_BUS.register(Events.INSTANCE);
+        FMLCommonHandler.instance().bus().register(Events.INSTANCE);
 
     }
 
