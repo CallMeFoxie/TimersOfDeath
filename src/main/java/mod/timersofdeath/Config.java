@@ -1,5 +1,6 @@
 package mod.timersofdeath;
 
+import darklib.PlayerData;
 import net.minecraft.potion.Potion;
 import net.minecraftforge.common.config.Configuration;
 
@@ -14,6 +15,17 @@ public class Config {
     public Config(String filename) {
         Configuration cfg = new Configuration(new File(filename), true);
         cfg.load();
+
+        cfg.get("config", "timeToRemember", PlayerData.TIME_TO_REMEMBER).getInt();
+        cfg.getStringList("sources1", "config", Events.sources1, "Type 1 severity damage sources");
+        cfg.getStringList("sources2", "config", Events.sources2, "Type 2 severity damage sources");
+        cfg.getStringList("sources3", "config", Events.sources3, "Type 3 severity damage sources");
+
+        cfg.getInt("severity1", "config", Events.SEVERITY_1, 0, 100, "Type 1 severity");
+        cfg.getInt("severity2", "config", Events.SEVERITY_2, 0, 100, "Type 2 severity");
+        cfg.getInt("severity3", "config", Events.SEVERITY_3, 0, 100, "Type 3 severity");
+
+        cfg.getInt("severity_default", "config", Events.SEVERITY_DEFAULT, 0, 100, "Severity for unknown sources");
 
         String[] debuffNames = {"moveSlowdown", "digSlowdown", "harm", "confusion", "blindness", "hunger", "weakness", "poison", "wither"};
         boolean[] defaultEnable = {true, true, false, false, true, false, true, false, false};
@@ -42,7 +54,6 @@ public class Config {
             cfg.save();
     }
 
-    // TODO configure this
     public static class Debuff {
         public boolean enable;
         public int     minimumSeverity;

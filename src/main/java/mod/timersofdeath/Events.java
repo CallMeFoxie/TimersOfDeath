@@ -11,13 +11,17 @@ import java.util.List;
 
 public class Events {
 
-    public static final int POTION_DURATION  = 40;
-    // TODO configure this
-    public static       int SEVERITY_DEFAULT = 1;
-    // TODO configure this
-    public static       int SEVERITY_DROWN   = 4;
-    // TODO configure this
-    public static       int SEVERITY_HUNGER  = 4;
+    public static final int POTION_DURATION = 40;
+
+    public static int SEVERITY_DEFAULT = 1;
+    public static int SEVERITY_1       = 4;
+    public static int SEVERITY_2       = 4;
+    public static int SEVERITY_3       = 8;
+
+    public static String[] sources1;
+    public static String[] sources2;
+    public static String[] sources3;
+
     public static Events INSTANCE;
 
     public Events() {

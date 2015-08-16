@@ -8,8 +8,7 @@ import java.util.Iterator;
 
 public class PlayerData {
 
-    // TODO configure this
-    public static long TIME_TO_REMEMBER = 24000 * 7; // a week in MC
+    public static int TIME_TO_REMEMBER = 24000 * 7; // a week in MC
 
     public ArrayList<Death> deathTimes;
 
