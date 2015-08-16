@@ -22,6 +22,7 @@ public class PlayerData {
 
     public void addDeath(long time, int severity) {
         deathTimes.add(new Death(time, severity));
+        SavedData.instance().markDirty();
     }
 
     // should be called periodically. Every few seconds? Prior to checking?
@@ -31,6 +32,7 @@ public class PlayerData {
             Death death = iterator.next();
             if (time - death.time > TIME_TO_REMEMBER) {
                 iterator.remove();
+                SavedData.instance().markDirty();
             }
         }
     }

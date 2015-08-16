@@ -11,9 +11,8 @@ import java.util.UUID;
 
 public class SavedData extends WorldSavedData {
 
+    public static SavedData instance;
     private static HashMap<UUID, PlayerData> savedData;
-
-    private static SavedData instance;
 
     public SavedData(String filename) {
         super(filename);

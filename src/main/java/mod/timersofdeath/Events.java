@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class Events {
@@ -14,15 +15,21 @@ public class Events {
     public static final int POTION_DURATION = 40;
 
     public static int SEVERITY_DEFAULT = 1;
-    public static int SEVERITY_1       = 4;
-    public static int SEVERITY_2       = 4;
-    public static int SEVERITY_3       = 8;
+    public static int SEVERITY_1       = 2;
+    public static int SEVERITY_2       = 3;
+    public static int SEVERITY_3       = 4;
 
     public static String[] sources1;
     public static String[] sources2;
     public static String[] sources3;
 
     public static Events INSTANCE;
+
+    static {
+        sources1 = new String[]{};
+        sources2 = new String[]{};
+        sources3 = new String[]{"drown", "starve"};
+    }
 
     public Events() {
         INSTANCE = this;
@@ -35,7 +42,14 @@ public class Events {
 
         if (event.entity instanceof EntityPlayer) {
             PlayerData data = TimersOfDeath.INSTANCE.playerData.getData((EntityPlayer) event.entity);
-            data.addDeath(event.entity.worldObj.getTotalWorldTime(), SEVERITY_DEFAULT);
+            if (Arrays.asList(sources3).contains(event.source.damageType))
+                data.addDeath(event.entity.worldObj.getTotalWorldTime(), SEVERITY_3);
+            else if (Arrays.asList(sources2).contains(event.source.damageType))
+                data.addDeath(event.entity.worldObj.getTotalWorldTime(), SEVERITY_2);
+            else if (Arrays.asList(sources1).contains(event.source.damageType))
+                data.addDeath(event.entity.worldObj.getTotalWorldTime(), SEVERITY_1);
+            else
+                data.addDeath(event.entity.worldObj.getTotalWorldTime(), SEVERITY_DEFAULT);
         }
     }
 
