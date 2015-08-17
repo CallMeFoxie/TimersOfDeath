@@ -51,30 +51,41 @@ public class PlayerData {
 
     // should be called periodically. Every few seconds? Prior to checking?
     public void cleanDeathTimes(long time) {
+        // 1st step - remove post-TIME_TO_REMEMBER items
+
+        if (onlines.size() == 0)
+            return; // wat
+
+        onlines.get(onlines.size() - 1).end = time; // update the current time
+
+        int timeSum = 0;
+        int i = onlines.size() - 1; // kinky, but messing with reverse iterators is bleh
+        for (; i >= 0; i--) {
+            timeSum += onlines.get(i).end - onlines.get(i).begin;
+            if (timeSum > TIME_TO_REMEMBER) {
+                onlines.get(i).begin += (timeSum - TIME_TO_REMEMBER); // pad the last online time
+                break;
+            }
+        }
+        // remove the previous unused times
+        for (--i; i >= 0; i--) {
+            onlines.remove(i);
+        }
+
+        // iterate through death times to find which ones are not in the time anymore
         Iterator<Death> iterator = deathTimes.iterator();
         while (iterator.hasNext()) {
             Death death = iterator.next();
-            if (time - death.time > TIME_TO_REMEMBER) {
-                iterator.remove();
-                SavedData.instance().markDirty();
-            }
-        }
-
-        // now check and clear old times that are not used anymore
-        Iterator<RecordedOnline> iterator1 = onlines.iterator();
-        while (iterator1.hasNext()) {
-            RecordedOnline online = iterator1.next();
             boolean found = false;
-            for (Death death : deathTimes) {
-                if (online.isTimeInRange(death.time)) {
+            for (RecordedOnline online : onlines) {
+                if (online.isTimeInRange(death.time))
                     found = true;
-                    break;
-                }
             }
-
             if (!found)
-                iterator1.remove();
+                iterator.remove();
         }
+
+        SavedData.instance().markDirty();
     }
 
     public void readFromNBT(NBTTagCompound tag) {
