@@ -52,6 +52,7 @@ public class TimersOfDeath {
         if (playerData == null) {
             playerData = new SavedData(MODID);
             world.setItemData(MODID, playerData);
+            // TODO close opened timers on clients because of server crash
         }
     }
 }

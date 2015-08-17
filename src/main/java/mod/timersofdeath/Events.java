@@ -3,6 +3,7 @@ package mod.timersofdeath;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import darklib.PlayerData;
+import darklib.SavedData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -77,5 +78,23 @@ public class Events {
             }
         }
 
+    }
+
+    @SubscribeEvent
+    public void onPlayerJoinServer(cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent event) {
+        if (event.player.worldObj.isRemote)
+            return;
+
+        PlayerData data = SavedData.instance().getData(event.player);
+        data.onPlayerJoined(event.player.worldObj.getTotalWorldTime());
+    }
+
+    @SubscribeEvent
+    public void onPlayerLeaveServer(cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent event) {
+        if (event.player.worldObj.isRemote)
+            return;
+
+        PlayerData data = SavedData.instance().getData(event.player);
+        data.onPlayerLeft(event.player.worldObj.getTotalWorldTime());
     }
 }
