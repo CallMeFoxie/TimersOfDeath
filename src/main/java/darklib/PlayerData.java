@@ -106,10 +106,14 @@ public class PlayerData {
     }
 
     public void writeToNBT(NBTTagCompound tag) {
-        NBTTagList deaths = new NBTTagList();
-        for (Death death : deathTimes) {
+        NBTTagList deaths = new NBTTagList(), seenOnline = new NBTTagList();
+        for (Death death : deathTimes)
             deaths.appendTag(death.writeToNBT(new NBTTagCompound()));
-        }
+        for (RecordedOnline online : onlines)
+            seenOnline.appendTag(online.writeToNBT(new NBTTagCompound()));
+
+        tag.setTag("Deaths", deaths);
+        tag.setTag("onlines", seenOnline);
     }
 
     public static class Death {
