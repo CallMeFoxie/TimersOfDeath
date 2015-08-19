@@ -7,6 +7,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.relauncher.Side;
+import darklib.PlayerData;
 import darklib.SavedData;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
@@ -52,7 +53,7 @@ public class TimersOfDeath {
         if (playerData == null) {
             playerData = new SavedData(MODID);
             world.setItemData(MODID, playerData);
-            // TODO close opened timers on clients because of server crash
+            PlayerData.closeExisting(world.getTotalWorldTime());
         }
     }
 }

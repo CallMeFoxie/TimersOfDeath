@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public class SavedData extends WorldSavedData {
 
-    public static SavedData instance;
+    public static  SavedData                 instance;
     private static HashMap<UUID, PlayerData> savedData;
 
     public SavedData(String filename) {
@@ -61,6 +61,10 @@ public class SavedData extends WorldSavedData {
         }
 
         return data;
+    }
+
+    public HashMap<UUID, PlayerData> getAllData() {
+        return savedData;
     }
 
     public PlayerData getData(EntityPlayer player) {

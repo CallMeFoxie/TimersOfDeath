@@ -4,7 +4,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.UUID;
 
 public class PlayerData {
 
@@ -19,6 +21,15 @@ public class PlayerData {
 
     public PlayerData(NBTTagCompound tag) {
         readFromNBT(tag);
+    }
+
+    public static void closeExisting(long serverTime) {
+        HashMap<UUID, PlayerData> map = SavedData.instance().getAllData();
+        for (PlayerData data : map.values()) {
+            for (RecordedOnline online : data.onlines)
+                if (online.end == -1)
+                    online.end = serverTime;
+        }
     }
 
     public void addDeath(long time, int severity) {
