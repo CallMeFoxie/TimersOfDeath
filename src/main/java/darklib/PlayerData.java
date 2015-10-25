@@ -67,7 +67,7 @@ public class PlayerData {
    public void cleanDeathTimes(long time) {
       // 1st step - remove post-TIME_TO_REMEMBER items
 
-      if (onlines.size() == 0)
+      if (onlines == null || onlines.size() == 0)
          return; // wat
 
       onlines.get(onlines.size() - 1).end = time; // update the current time
